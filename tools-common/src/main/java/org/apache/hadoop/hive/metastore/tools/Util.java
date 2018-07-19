@@ -509,7 +509,18 @@ public final class Util {
                                   @NotNull List<String> arguments,
                                   int npartitions) throws TException {
     Table table = client.getTable(dbName, tableName);
-    client.addPartitions(createManyPartitions(table, parameters, arguments, npartitions));
+    final int batchSize = 100;
+    int remaining = npartitions;
+    int counter = 0;
+    while (remaining > 0) {
+      final int current = Math.min(remaining, batchSize);
+      counter++;
+      final String prefix = "batch" + Integer.toString(counter) + "-";
+      final List<String> prefixed = arguments.stream()
+              .map(str -> prefix + str).collect(Collectors.toList());
+      client.addPartitions(createManyPartitions(table, parameters, prefixed, current));
+      remaining -= batchSize;
+    }
     return null;
   }
 
