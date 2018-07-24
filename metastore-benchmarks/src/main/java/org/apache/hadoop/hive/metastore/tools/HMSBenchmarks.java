@@ -240,7 +240,7 @@ final class HMSBenchmarks {
       e.printStackTrace();
       return new DescriptiveStatistics();
     } finally {
-      //throwingSupplierWrapper(() -> client.dropTable(dbName, tableName));
+      throwingSupplierWrapper(() -> client.dropTable(dbName, tableName));
     }
   }
 
