@@ -39,12 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -283,6 +278,7 @@ public final class Util {
       return this;
     }
 
+
     TableBuilder withLocation(String location) {
       this.location = location;
       return this;
@@ -369,11 +365,22 @@ public final class Util {
               .mapToObj(i -> partitionNames.get(i) + "=" + values.get(i))
               .collect(Collectors.toList());
 
+      StorageDescriptor sd = table.getSd().deepCopy();
+      sd.setParameters(parameters);
+
+      String[] serdeArr = {"org.apache.hadoop.hive.serde2.avro.AvroSerDe", "parquet.hive.serde.ParquetHiveSerDe",
+              "org.apache.hadoop.hive.serde2.OpenCSVSerde", "org.apache.hadoop.hive.serde2.RegexSerDe",
+              "org.apache.hive.hcatalog.data.JsonSerDe"};
+
+      SerDeInfo serde = sd.getSerdeInfo();
+
+      serde.setSerializationLib(getRandom(serdeArr));
+      serde.setName("ANURAG.MANTRI");
       partition.setDbName(table.getDbName());
       partition.setTableName(table.getTableName());
       partition.setParameters(parameters);
       partition.setValues(values);
-      partition.setSd(table.getSd().deepCopy());
+      partition.setSd(sd);
       if (this.location == null) {
         partition.getSd().setLocation(table.getSd().getLocation() + "/" + Joiner.on("/").join(spec));
       } else {
@@ -381,6 +388,11 @@ public final class Util {
       }
       return partition;
     }
+  }
+
+  private static String getRandom(String[] array) {
+    int rnd = new Random().nextInt(array.length);
+    return array[rnd];
   }
 
   /**
