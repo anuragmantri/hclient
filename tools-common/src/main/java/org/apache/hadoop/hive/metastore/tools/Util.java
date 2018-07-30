@@ -370,7 +370,7 @@ public final class Util {
 
       String[] serdeArr = {"org.apache.hadoop.hive.serde2.avro.AvroSerDe", "parquet.hive.serde.ParquetHiveSerDe",
               "org.apache.hadoop.hive.serde2.OpenCSVSerde", "org.apache.hadoop.hive.serde2.RegexSerDe",
-              "org.apache.hive.hcatalog.data.JsonSerDe"};
+              "org.apache.hive.hcatalog.data.JsonSerDe","org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe"};
 
       SerDeInfo serde = sd.getSerdeInfo();
 
