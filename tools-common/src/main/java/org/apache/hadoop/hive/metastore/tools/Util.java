@@ -368,6 +368,9 @@ public final class Util {
       StorageDescriptor sd = table.getSd().deepCopy();
       sd.setParameters(parameters);
 
+      sd.setInputFormat("org.apache.hadoop.hive.ql.io.avro.AvroContainerInputFormat");
+      sd.setOutputFormat("org.apache.hadoop.hive.ql.io.avro.AvroContainerOutputFormat'");
+
       String[] serdeArr = {"org.apache.hadoop.hive.serde2.avro.AvroSerDe", "parquet.hive.serde.ParquetHiveSerDe",
               "org.apache.hadoop.hive.serde2.OpenCSVSerde", "org.apache.hadoop.hive.serde2.RegexSerDe",
               "org.apache.hive.hcatalog.data.JsonSerDe"};
