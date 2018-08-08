@@ -524,7 +524,7 @@ public final class Util {
                                   @NotNull List<String> arguments,
                                   int npartitions) throws TException {
     Table table = client.getTable(dbName, tableName);
-    final int batchSize = 100;
+    final int batchSize = 100000;
     int remaining = npartitions;
     int counter = 0;
     while (remaining > 0) {
