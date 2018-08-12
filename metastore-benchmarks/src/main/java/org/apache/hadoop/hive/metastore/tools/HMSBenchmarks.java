@@ -327,7 +327,7 @@ final class HMSBenchmarks {
           () -> throwingSupplierWrapper(() -> client.getPartitionNames(dbName, tableName))
       );
     } finally {
-      //throwingSupplierWrapper(() -> client.dropTable(dbName, tableName));
+      throwingSupplierWrapper(() -> client.dropTable(dbName, tableName));
     }
   }
 
